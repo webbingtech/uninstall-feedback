@@ -3,6 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <title>Uninstall Feedback</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+    .container {
+      background-color: #ffffff;
+      padding: 20px 40px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 90%;
+    }
+    h1 {
+      text-align: center;
+      color: #333333;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      color: #555555;
+    }
+    select, textarea {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+      border: 1px solid #cccccc;
+      border-radius: 4px;
+    }
+    input[type="submit"] {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    .message {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+  </style>
   <script>
     // 函数用于解析URL查询参数
     function getQueryParams() {
@@ -17,8 +71,6 @@
       }
       return params;
     }
-
-    // 函数用于自动提交 platform 和 profile 使用 Fetch API
 
     // 自动提交 platform 和 profile 的函数
     async function autoSubmitPlatformProfile() {
@@ -49,14 +101,20 @@
             const thankYouMessage = document.createElement('p');
             thankYouMessage.textContent = 'Thank you for your feedback!';
             thankYouMessage.style.color = 'green';
-            document.body.prepend(thankYouMessage);
+            thankYouMessage.classList.add('message');
+            document.body.querySelector('.container').prepend(thankYouMessage);
+
+            // 移除 URL 参数
+            const newURL = window.location.origin + window.location.pathname;
+            window.history.replaceState({}, document.title, newURL);
           } else {
             console.error('Failed to submit Platform and Profile:', response.statusText);
             // 显示错误消息
             const errorMessage = document.createElement('p');
             errorMessage.textContent = 'There was an error submitting your data. Please try again later.';
             errorMessage.style.color = 'red';
-            document.body.prepend(errorMessage);
+            errorMessage.classList.add('message');
+            document.body.querySelector('.container').prepend(errorMessage);
           }
         } catch (error) {
           console.error('Error submitting Platform and Profile:', error);
@@ -64,40 +122,46 @@
           const errorMessage = document.createElement('p');
           errorMessage.textContent = 'There was an error submitting your data. Please try again later.';
           errorMessage.style.color = 'red';
-          document.body.prepend(errorMessage);
+          errorMessage.classList.add('message');
+          document.body.querySelector('.container').prepend(errorMessage);
         }
       }
     }
 
     // 在页面加载完成后自动提交
     window.addEventListener('DOMContentLoaded', () => {
-    //  autoSubmitPlatformProfile();
+      //autoSubmitPlatformProfile();
     });
   </script>
 </head>
 <body>
-  <h1>We're sorry you are uninstalling the extension</h1>
-  
-  <!-- 用户手动提交反馈的表单 -->
-  <form action="https://formspree.io/f/myzkjero" method="POST">
-    <label for="reason">Please select the reason for uninstalling:</label><br>
-    <select id="reason" name="reason" required>
-      <option value="">--Select a reason--</option>
-      <option value="performance">Performance issues</option>
-      <option value="functionality">Functionality does not meet my needs</option>
-      <option value="user_experience">Poor user experience</option>
-      <option value="privacy_security">Privacy or security concerns</option>
-      <option value="ads">Too many ads</option>
-      <option value="conflict">Conflicts with other extensions</option>
-      <option value="ineffective">Ineffective or not helpful</option>
-      <option value="better_alternative">Found a better alternative</option>
-      <option value="updates_maintenance">Frequent updates or maintenance required</option>
-      <option value="incompatibility">Incompatibility with my browser or OS</option>
-    </select><br><br>
-    <label for="feedback">Additional feedback (optional):</label><br>
-    <textarea id="feedback" name="feedback" rows="4" cols="50"></textarea><br>
-    <!-- 隐藏输入字段将由JavaScript动态添加并自动提交 -->
-    <input type="submit" value="Submit Feedback">
-  </form>
+  <div class="container">
+    <h1>We're sorry you are uninstalling the extension</h1>
+
+    <!-- 自动提交的反馈（platform 和 profile）将不会导致页面跳转 -->
+
+    <!-- 用户手动提交反馈的表单 -->
+    <form action="https://formspree.io/f/myzkjero" method="POST">
+      <label for="reason">Please select the reason for uninstalling:</label>
+      <select id="reason" name="reason" required>
+        <option value="">--Select a reason--</option>
+        <option value="performance">Performance issues</option>
+        <option value="functionality">Functionality does not meet my needs</option>
+        <option value="user_experience">Poor user experience</option>
+        <option value="privacy_security">Privacy or security concerns</option>
+        <option value="ads">Too many ads</option>
+        <option value="conflict">Conflicts with other extensions</option>
+        <option value="ineffective">Ineffective or not helpful</option>
+        <option value="better_alternative">Found a better alternative</option>
+        <option value="updates_maintenance">Frequent updates or maintenance required</option>
+        <option value="incompatibility">Incompatibility with my browser or OS</option>
+      </select>
+
+      <label for="feedback">Additional feedback (optional):</label>
+      <textarea id="feedback" name="feedback" rows="4" cols="50"></textarea>
+
+      <input type="submit" value="Submit Feedback">
+    </form>
+  </div>
 </body>
 </html>
