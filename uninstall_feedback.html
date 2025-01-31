@@ -18,36 +18,34 @@
       return params;
     }
 
-    // 函数用于自动提交 platform 和 profile
-    function autoSubmitPlatformProfile() {
+    // 函数用于自动提交 platform 和 profile 使用 Fetch API
+    async function autoSubmitPlatformProfile() {
       const params = getQueryParams();
       const platform = params.platform || '';
       const profile = params.profile || '';
 
       // 仅在存在 platform 和 profile 时提交
       if (platform && profile) {
-        // 创建一个隐藏的表单
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = 'https://formspree.io/f/myzkjero';
+        try {
+          const response = await fetch('https://formspree.io/f/myzkjero', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              platform: platform,
+              profile: profile
+            })
+          });
 
-        // 创建 platform 隐藏输入字段
-        const platformInput = document.createElement('input');
-        platformInput.type = 'hidden';
-        platformInput.name = 'platform';
-        platformInput.value = platform;
-        form.appendChild(platformInput);
-
-        // 创建 profile 隐藏输入字段
-        const profileInput = document.createElement('input');
-        profileInput.type = 'hidden';
-        profileInput.name = 'profile';
-        profileInput.value = profile;
-        form.appendChild(profileInput);
-
-        // 将表单添加到页面并提交
-        document.body.appendChild(form);
-        form.submit();
+          if (response.ok) {
+            console.log('Platform and Profile successfully submitted.');
+          } else {
+            console.error('Failed to submit Platform and Profile:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error submitting Platform and Profile:', error);
+        }
       }
     }
 
@@ -59,8 +57,9 @@
 </head>
 <body>
   <h1>We're sorry you are uninstalling the extension</h1>
+  
   <!-- 用户手动提交反馈的表单 -->
-  <form action="https://formspree.io/f/xyzkjevo" method="POST">
+  <form action="https://formspree.io/f/myzkjero" method="POST">
     <label for="reason">Please select the reason for uninstalling:</label><br>
     <select id="reason" name="reason" required>
       <option value="">--Select a reason--</option>
