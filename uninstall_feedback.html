@@ -3,9 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <title>Uninstall Feedback</title>
+  <script>
+    // 函数用于解析URL查询参数
+    function getQueryParams() {
+      const params = {};
+      const queryString = window.location.search.substring(1);
+      const pairs = queryString.split("&");
+      for (let pair of pairs) {
+        const [key, value] = pair.split("=");
+        if (key) {
+          params[decodeURIComponent(key)] = decodeURIComponent(value || "");
+        }
+      }
+      return params;
+    }
+
+    // 函数用于自动提交 platform 和 profile
+    function autoSubmitPlatformProfile() {
+      const params = getQueryParams();
+      const platform = params.platform || '';
+      const profile = params.profile || '';
+
+      // 仅在存在 platform 和 profile 时提交
+      if (platform && profile) {
+        // 创建一个隐藏的表单
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'https://formspree.io/f/myzkjero';
+
+        // 创建 platform 隐藏输入字段
+        const platformInput = document.createElement('input');
+        platformInput.type = 'hidden';
+        platformInput.name = 'platform';
+        platformInput.value = platform;
+        form.appendChild(platformInput);
+
+        // 创建 profile 隐藏输入字段
+        const profileInput = document.createElement('input');
+        profileInput.type = 'hidden';
+        profileInput.name = 'profile';
+        profileInput.value = profile;
+        form.appendChild(profileInput);
+
+        // 将表单添加到页面并提交
+        document.body.appendChild(form);
+        form.submit();
+      }
+    }
+
+    // 在页面加载完成后自动提交
+    window.addEventListener('DOMContentLoaded', () => {
+      autoSubmitPlatformProfile();
+    });
+  </script>
 </head>
 <body>
   <h1>We're sorry you are uninstalling the extension</h1>
+  <!-- 用户手动提交反馈的表单 -->
   <form action="https://formspree.io/f/xyzkjevo" method="POST">
     <label for="reason">Please select the reason for uninstalling:</label><br>
     <select id="reason" name="reason" required>
@@ -14,15 +68,16 @@
       <option value="functionality">Functionality does not meet my needs</option>
       <option value="user_experience">Poor user experience</option>
       <option value="privacy_security">Privacy or security concerns</option>
+      <option value="ads">Too many ads</option>
       <option value="conflict">Conflicts with other extensions</option>
       <option value="ineffective">Ineffective or not helpful</option>
       <option value="better_alternative">Found a better alternative</option>
       <option value="updates_maintenance">Frequent updates or maintenance required</option>
       <option value="incompatibility">Incompatibility with my browser or OS</option>
-      <option value="others">Other reason</option>
     </select><br><br>
     <label for="feedback">Additional feedback (optional):</label><br>
     <textarea id="feedback" name="feedback" rows="4" cols="50"></textarea><br>
+    <!-- 隐藏输入字段将由JavaScript动态添加并自动提交 -->
     <input type="submit" value="Submit Feedback">
   </form>
 </body>
