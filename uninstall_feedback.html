@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Uninstall Feedback</title>
+</head>
+<body>
+  <h1>We're sorry you are uninstalling the extension</h1>
+  <form action="https://formspree.io/f/xyzkjevo" method="POST">
+    <label for="reason">Please select the reason for uninstalling:</label><br>
+    <select id="reason" name="reason" required>
+      <option value="">--Select a reason--</option>
+      <option value="performance">Performance issues</option>
+      <option value="functionality">Functionality does not meet my needs</option>
+      <option value="user_experience">Poor user experience</option>
+      <option value="privacy_security">Privacy or security concerns</option>
+      <option value="conflict">Conflicts with other extensions</option>
+      <option value="ineffective">Ineffective or not helpful</option>
+      <option value="better_alternative">Found a better alternative</option>
+      <option value="updates_maintenance">Frequent updates or maintenance required</option>
+      <option value="incompatibility">Incompatibility with my browser or OS</option>
+      <option value="others">Other reason</option>
+    </select><br><br>
+    <label for="feedback">Additional feedback (optional):</label><br>
+    <textarea id="feedback" name="feedback" rows="4" cols="50"></textarea><br>
+    <input type="submit" value="Submit Feedback">
+  </form>
+</body>
+</html>
